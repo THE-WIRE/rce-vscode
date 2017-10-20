@@ -3,7 +3,7 @@
 var vscode = require('vscode');
 var btoa = require("btoa");
 var io = require('socket.io-client');
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect('https://rce-server.herokuapp.com/');
 
 
 socket.on('init', function(data){
@@ -26,22 +26,22 @@ function activate(context) {
 
         socket.on('init', function (data) {
             console.log(data);
+          });
 
-            vscode.window.showInputBox().then(function (username) {
-                vscode.window.showInputBox().then(function (password) {
-    
-                    
-                    socket.emit('creds', {
-                        username : username,
-                        password: btoa(password)
-                    })
-    
-                    socket.on('confirm', function(data){
-                        vscode.window.showInformationMessage(data.p);
-                    })
+          vscode.window.showInputBox().then(function (username) {
+            vscode.window.showInputBox().then(function (password) {
+
+                
+                socket.emit('creds', {
+                    username : username,
+                    password: btoa(password)
+                })
+
+                socket.on('confirm', function(data){
+                    vscode.window.showInformationMessage(data.p);
                 })
             })
-          });
+        })
         
     });
 
