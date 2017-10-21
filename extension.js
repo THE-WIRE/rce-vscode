@@ -3,7 +3,7 @@
 var vscode = require('vscode');
 var btoa = require("btoa");
 var io = require('socket.io-client');
-var socket = io.connect('https://rce-server.herokuapp.com/');
+var socket = io.connect('http://localhost:3000/');
 
 
 socket.on('init', function(data){
