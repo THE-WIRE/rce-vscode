@@ -23,7 +23,7 @@ function activate(context) {
     // The commandId parameter must match the command field in package.json
     var disposable = vscode.commands.registerCommand('extension.sayHello', function () {
         // The code you place here will be executed every time your command is executed
-
+        vscode.window.showInformationMessage("inside Branch b1");
         socket.on('init', function (data) {
             console.log(data);
           });
