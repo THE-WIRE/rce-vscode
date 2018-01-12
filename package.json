@@ -11,14 +11,19 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.rce-connect",
+        "onCommand:extension.rce-disconnect"
     ],
     "main": "./extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.rce-connect",
+                "title": "RCE : Connect"
+            },
+            {
+                "command": "extension.rce-disconnect",
+                "title": "RCE : Disconnect"
             }
         ]
     },
@@ -37,6 +42,7 @@
     "dependencies": {
         "btoa": "^1.1.2",
         "socket.io": "^2.0.3",
-        "socket.io-client": "^2.0.3"
+        "socket.io-client": "^2.0.3",
+        "ws": "^0.6.4"
     }
 }
