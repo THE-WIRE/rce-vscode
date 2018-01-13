@@ -102,6 +102,6 @@
       return ctx;
     }
   
-      module.exports = shareAtomEditor;
+      module.exports = shareVSCodeEditor;
   })();
   
