@@ -21,7 +21,5 @@ class EventHandler {
             this.separator = '/';
         }
         this.syncTabsEvents = ['open', 'close'];
-        
     }
 }
-

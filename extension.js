@@ -48,7 +48,7 @@ function startSession(){
     vscode.window.showInputBox({ prompt: "Enter Team Key", ignoreFocusOut: true})
     .then(sessionId => {
         this.sessionStatus.text = "$(broadcast)RCE : Initiating connection...";
-        // sessionId == ''? vscode.window.showErrorMessage("Session Id Cannot be empty!") : connect(sessionId);
+        sessionId == ''? vscode.window.showErrorMessage("Session Id Cannot be empty!") : connect(sessionId);
     })
 }
 
@@ -57,11 +57,15 @@ function setupHeartbeat(){
         try {
             this.ws.send('ping', error => {
                 if(error != null){
-                    this.event_handler.emitter.emit('socket-not-opened');
+                    // this.event_handler.emitter.emit('socket-not-opened');
+                }
+                else{
+                    this.sessionStatus.text = "$(broadcast)RCE : Connected";
                 }
             })
         } catch (error1){
-            this.event_handler.emitter.emit('socket-not-opened');
+            // this.event_handler.emitter.emit('socket-not-opened');
+            this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
             clearInterval(this.hearbeatId);
         }
     }, 30000);
@@ -73,16 +77,16 @@ function connect(sessionId){
     this.ws.on("open",  () => {
         vscode.window.showInformationMessage("Session Started");
         setupHeartbeat();
-        this.vscode_share = new VSCodeShare(this.ws);
-        this.vscode_share.start(sessionId);
+        // this.vscode_share = new VSCodeShare(this.ws);
+        // this.vscode_share.start(sessionId);
 
-        this.event_handler = new EventHandler(this.ws);
-        this.event_handler.listen();
+        // this.event_handler = new EventHandler(this.ws);
+        // this.event_handler.listen();
 
-        this.event_handler.emitter.on('socket-not-opened', () => {
-            vscode.window.showWarningMessage("RCE : Connection Lost");
-            this.deactivate();
-        });
+        // this.event_handler.emitter.on('socket-not-opened', () => {
+        //     vscode.window.showWarningMessage("RCE : Connection Lost");
+        //     this.deactivate();
+        // });
 
         //TODO : this.sessionStatusView = new SessionView;
 
@@ -107,12 +111,12 @@ function deactivate() {
         vscode.window.showInformationMessage('RCE : Disconnected');
         this.ws.close();
         this.ws = null;
-        if(this.event_handler != null){
-            this.event_handler.subscriptions.dispose();
-        }
-        if(this.vscode_share != null){
-            this.vscode_share.subscriptions.dispose();
-        }
+        // if(this.event_handler != null){
+        //     this.event_handler.subscriptions.dispose();
+        // }
+        // if(this.vscode_share != null){
+        //     this.vscode_share.subscriptions.dispose();
+        // }
         
     }
     else{
