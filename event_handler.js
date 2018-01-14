@@ -23,4 +23,3 @@ class EventHandler {
         this.syncTabsEvents = ['open', 'close'];
     }
 }
-
