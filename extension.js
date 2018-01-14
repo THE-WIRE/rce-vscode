@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const btoa = require("btoa");
 const EventHandler = require('./event_handler');
-const VSCodeShare = require('./vscode_share');
+const VSCodeShare = require('');
 const WebSocket = require("ws");
 const NewSessionView = require('./new-session-view');
 const SessionView = require('./session-view');
@@ -40,7 +40,9 @@ function activate(context) {
 }
 
 function startSession(){
-
+    vscode.workspace.onDidChangeTextDocument((e)=>{
+    
+    })
     this.sessionStatus = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     this.sessionStatus.text = "$(broadcast)RCE : Enter team Key...";
     this.sessionStatus.show();
@@ -77,8 +79,8 @@ function connect(sessionId){
     this.ws.on("open",  () => {
         vscode.window.showInformationMessage("Session Started");
         setupHeartbeat();
-        // this.vscode_share = new VSCodeShare(this.ws);
-        // this.vscode_share.start(sessionId);
+        this.vscode_share = new VSCodeShare(this.ws);
+        this.vscode_share.start(sessionId);
 
         // this.event_handler = new EventHandler(this.ws);
         // this.event_handler.listen();
