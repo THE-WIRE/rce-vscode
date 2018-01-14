@@ -92,6 +92,10 @@ function connect(sessionId){
 
     });
 
+    this.ws.on('message', function(data){
+        console.log(data);
+    })
+
     this.ws.on('error',  e => {
         console.log('error', e);
         vscode.window.showErrorMessage('RCE : Could not connect');

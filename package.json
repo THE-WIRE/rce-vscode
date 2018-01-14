@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "btoa": "^1.1.2",
+    "ottypes": "^1.0.3",
     "share": "^0.6.3",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
