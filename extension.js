@@ -58,6 +58,7 @@ function setupHeartbeat(){
             this.ws.send('ping', error => {
                 if(error != null){
                     // this.event_handler.emitter.emit('socket-not-opened');
+                    this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
                 }
                 else{
                     this.sessionStatus.text = "$(broadcast)RCE : Connected";
@@ -66,7 +67,7 @@ function setupHeartbeat(){
         } catch (error1){
             // this.event_handler.emitter.emit('socket-not-opened');
             this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
-            clearInterval(this.hearbeatId);
+            deactivate();
         }
     }, 30000);
 }
@@ -79,6 +80,7 @@ function connect(sessionId){
         setupHeartbeat();
         this.vscode_share = new VscodeShare(this.ws);
         this.vscode_share.start(sessionId);
+        this.sessionStatus.text = "$(broadcast)RCE : Connected";
 
         // this.event_handler = new EventHandler(this.ws);
         // this.event_handler.listen();
@@ -96,10 +98,14 @@ function connect(sessionId){
         console.log(data);
     })
 
+    this.ws.on('close', function(data){
+        this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
+    })
+
     this.ws.on('error',  e => {
         console.log('error', e);
         vscode.window.showErrorMessage('RCE : Could not connect');
-        this.deactivate();
+        deactivate();
     })
 }
 
@@ -124,7 +130,7 @@ function deactivate() {
         
     }
     else{
-        vscode.showWarningMessage("RCE : No active sessions found");
+        vscode.window.showWarningMessage("RCE : No active sessions found");
     }
     
 }
