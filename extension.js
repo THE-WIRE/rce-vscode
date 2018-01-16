@@ -45,11 +45,11 @@ function startSession(){
     this.sessionStatus.text = "$(broadcast)RCE : Enter team Key...";
     this.sessionStatus.show();
     
-    // vscode.window.showInputBox({ prompt: "Enter Team Key", ignoreFocusOut: true})
-    // .then(sessionId => {
-    //     this.sessionStatus.text = "$(broadcast)RCE : Initiating connection...";
-    //     // sessionId == ''? vscode.window.showErrorMessage("Session Id Cannot be empty!") : connect(sessionId);
-    // })
+    vscode.window.showInputBox({ prompt: "Enter Team Key", ignoreFocusOut: true})
+    .then(sessionId => {
+        this.sessionStatus.text = "$(broadcast)RCE : Initiating connection...";
+        sessionId == ''? vscode.window.showErrorMessage("Session Id Cannot be empty!") : connect(sessionId);
+    })
 }
 
 function setupHeartbeat(){
