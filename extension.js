@@ -40,7 +40,14 @@ function activate(context) {
 }
 
 function startSession(){
-    
+    // const range = new vscode.Range(0,0,9,5);
+    // const text = 'dummydummydummy'
+    // editor.edit((editBuilder)=>{
+    //     editBuilder.replace(range,text)
+    // }).then(success=>{
+    //     editor.selection.active = editor.selection.anchor
+    // })  
+
     this.sessionStatus = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     this.sessionStatus.text = "$(broadcast)RCE : Enter team Key...";
     this.sessionStatus.show();
