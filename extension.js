@@ -115,7 +115,6 @@ function connect(sessionId){
         deactivate();
     })
 }
-
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
