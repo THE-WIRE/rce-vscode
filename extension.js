@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const btoa = require("btoa");
 const EventHandler = require('./event_handler');
-const VSCodeShare = require('./vscode_share');
+const VscodeShare = require('./lib/vscode_share');
 const WebSocket = require("ws");
 const NewSessionView = require('./new-session-view');
 const SessionView = require('./session-view');
@@ -40,6 +40,13 @@ function activate(context) {
 }
 
 function startSession(){
+    // const range = new vscode.Range(0,0,9,5);
+    // const text = 'dummydummydummy'
+    // editor.edit((editBuilder)=>{
+    //     editBuilder.replace(range,text)
+    // }).then(success=>{
+    //     editor.selection.active = editor.selection.anchor
+    // })  
 
     this.sessionStatus = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     this.sessionStatus.text = "$(broadcast)RCE : Enter team Key...";
@@ -58,6 +65,7 @@ function setupHeartbeat(){
             this.ws.send('ping', error => {
                 if(error != null){
                     // this.event_handler.emitter.emit('socket-not-opened');
+                    this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
                 }
                 else{
                     this.sessionStatus.text = "$(broadcast)RCE : Connected";
@@ -66,7 +74,7 @@ function setupHeartbeat(){
         } catch (error1){
             // this.event_handler.emitter.emit('socket-not-opened');
             this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
-            clearInterval(this.hearbeatId);
+            deactivate();
         }
     }, 30000);
 }
@@ -77,8 +85,9 @@ function connect(sessionId){
     this.ws.on("open",  () => {
         vscode.window.showInformationMessage("Session Started");
         setupHeartbeat();
-        // this.vscode_share = new VSCodeShare(this.ws);
-        // this.vscode_share.start(sessionId);
+        this.vscode_share = new VscodeShare(this.ws);
+        this.vscode_share.start(sessionId);
+        this.sessionStatus.text = "$(broadcast)RCE : Connected";
 
         // this.event_handler = new EventHandler(this.ws);
         // this.event_handler.listen();
@@ -92,13 +101,20 @@ function connect(sessionId){
 
     });
 
+    this.ws.on('message', function(data){
+        console.log(data);
+    })
+
+    this.ws.on('close', function(data){
+        this.sessionStatus.text = "$(broadcast)RCE : Disconnected";
+    })
+
     this.ws.on('error',  e => {
         console.log('error', e);
         vscode.window.showErrorMessage('RCE : Could not connect');
-        this.deactivate();
+        deactivate();
     })
 }
-
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
@@ -120,9 +136,10 @@ function deactivate() {
         
     }
     else{
-        vscode.showWarningMessage("RCE : No active sessions found");
+        vscode.window.showWarningMessage("RCE : No active sessions found");
     }
     
 }
+
 exports.deactivate = deactivate;
 exports.config = config
