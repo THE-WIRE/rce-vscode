@@ -1,3 +1,4 @@
+
 const vscode = require('vscode');
 const btoa = require("btoa");
 const EventHandler = require('./event_handler');
@@ -6,6 +7,7 @@ const WebSocket = require("ws");
 const NewSessionView = require('./new-session-view');
 const SessionView = require('./session-view');
 const RemoteCursorView = require("./remote-cursor-view");
+
 
 const config = {
     version: require('./package.json').version,
@@ -26,6 +28,7 @@ function createSocketConnection(){
     setDefaultValues();
 
     const proto = this.secureConnection ? 'wss' : 'ws';
+
 
     return new WebSocket(`${proto}://${this.address}:${this.portNumber}`);
 }
